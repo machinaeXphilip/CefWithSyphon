@@ -20,6 +20,9 @@ void ClientAppBrowser::OnBeforeCommandLineProcessing(
     CefRefPtr<CefCommandLine> command_line) {
   // Pass additional command-line flags to the browser process.
   if (process_type.empty()) {
+    // syph - Disable the GPU blacklist so that we can render WebGL on my Early 2011 MacBook Pro
+    command_line->AppendSwitch("ignore-gpu-blacklist");
+
     // Pass additional command-line flags when off-screen rendering is enabled.
     if (command_line->HasSwitch(switches::kOffScreenRenderingEnabled)) {
       // If the PDF extension is enabled then cc Surfaces must be disabled for
