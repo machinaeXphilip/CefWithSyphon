@@ -8,6 +8,10 @@
 #import <objc/runtime.h>
 #include <OpenGL/gl.h>
 
+// syph - Added Syphon framework
+//#import <Syphon/Syphon.h>
+#import "Syphon.framework/Headers/Syphon.h"
+
 #include "include/base/cef_logging.h"
 #include "include/cef_parser.h"
 #include "include/wrapper/cef_closure_task.h"
