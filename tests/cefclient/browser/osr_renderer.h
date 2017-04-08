@@ -44,7 +44,10 @@ class OsrRenderer {
   // |rect| must be in pixel coordinates.
   void OnPopupSize(CefRefPtr<CefBrowser> browser,
                    const CefRect& rect);
-  void OnPaint(CefRefPtr<CefBrowser> browser,
+
+  //syph - return opengl texture ID
+  unsigned int OnPaint(CefRefPtr<CefBrowser> browser,
+  //void OnPaint(CefRefPtr<CefBrowser> browser,
                CefRenderHandler::PaintElementType type,
                const CefRenderHandler::RectList& dirtyRects,
                const void* buffer, int width, int height);

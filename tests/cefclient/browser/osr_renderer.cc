@@ -245,7 +245,9 @@ void OsrRenderer::ClearPopupRects() {
   original_popup_rect_.Set(0, 0, 0, 0);
 }
 
-void OsrRenderer::OnPaint(CefRefPtr<CefBrowser> browser,
+//syph - return opengl texture id from this function
+unsigned int OsrRenderer::OnPaint(CefRefPtr<CefBrowser> browser,
+//void OsrRenderer::OnPaint(CefRefPtr<CefBrowser> browser,
                           CefRenderHandler::PaintElementType type,
                           const CefRenderHandler::RectList& dirtyRects,
                           const void* buffer, int width, int height) {
@@ -334,6 +336,9 @@ void OsrRenderer::OnPaint(CefRefPtr<CefBrowser> browser,
     // Disable alpha blending.
     glDisable(GL_BLEND); VERIFY_NO_ERROR;
   }
+
+  // syph - Return the WebGL texture id
+  return texture_id_;
 }
 
 void OsrRenderer::SetSpin(float spinX, float spinY) {
