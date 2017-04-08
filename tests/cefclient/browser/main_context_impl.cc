@@ -13,7 +13,8 @@ namespace client {
 namespace {
 
 // The default URL to load in a browser window.
-const char kDefaultUrl[] = "http://www.google.com";
+// syph - Start at my landing page
+const char kDefaultUrl[] = "http://dome.marciot.com";
 
 // Returns the ARGB value for |color|.
 cef_color_t ParseColor(const std::string& color) {
