@@ -56,8 +56,10 @@ MainContextImpl::MainContextImpl(CefRefPtr<CefCommandLine> command_line,
     main_url_ = kDefaultUrl;
 
   // Whether windowless (off-screen) rendering will be used.
-  use_windowless_rendering_ =
-      command_line_->HasSwitch(switches::kOffScreenRenderingEnabled);
+  //use_windowless_rendering_ =
+  //    command_line_->HasSwitch(switches::kOffScreenRenderingEnabled);
+  //syph - always use offscreen rendering. Otherwise we cannot create an opengl texture for syphon
+  use_windowless_rendering_ = true;
 
 #if defined(OS_WIN) || defined(OS_LINUX)
   // Whether the Views framework will be used.
