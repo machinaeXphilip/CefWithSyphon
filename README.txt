@@ -1,36 +1,186 @@
-CEF WITH SYPHON
----------------
+Chromium Embedded Framework (CEF) Standard Binary Distribution for Mac OS-X
+-------------------------------------------------------------------------------
 
-This is an application for Mac OS X which makes it poosible to share the contents of a web browser (based on Chrome) using Syphon. It implements most of the things you'd expect except pop up windows (at the moment). Complicated html pages do not run as fast as a real Chrome browser but e.g. Flash and WebGL seems to run smoothly.
+Date:             April 06, 2017
 
-Build the code or download the CefWithSyphon application from here: http://udart.dk/downloads/CefWithSyphon/
+CEF Version:      3.2987.1600.g9ea5b3b
+CEF URL:          https://bitbucket.org/chromiumembedded/cef.git
+                  @9ea5b3bbca7fec0c571683b3e912b2a7ce369c50
 
-DISCLAIMER
-----------
+Chromium Verison: 57.0.2987.133
+Chromium URL:     https://chromium.googlesource.com/chromium/src.git
+                  @8a67263f2d4e0fcbf1675e08b7e24672046463d2
 
-The application was created by modifying the cefclient sample application that comes with the OS X download from this page: 
-http://www.magpcss.net/cef_downloads/index.php?query=label%3A%7EDeprecated+label%3ACEF3+label%3Abinary#list
+This distribution contains all components necessary to build and distribute an
+application using CEF on the Mac OS-X platform. Please see the LICENSING
+section of this document for licensing terms and conditions.
 
-This is a quick hack so far but it might be useful as it is. It is not really tested so post any issues here on Github and we'll see what happens... 
-I am not affiliated with the CEF development team and I have limited knowledge of the underlying technology.
 
-The modification was done by adding the Syphon framework plus a handful of changes to the code. Find them by searching for 'syph' in the comments. Note that compiler settings may need to be changed - see the Cef-readme.txt
+CONTENTS
+--------
 
-BUILDING WITH XCODE
--------------------
+cmake       Contains CMake configuration files shared by all targets.
 
-Because Github has a 100 MB size limit on files I cannot upload the project ready to compile. Instead you have to first unzip the cef_binary_3-1.1547.1412_macosx32 and then drop 1) The cefclient folder, 2) the xcode project and 3) the Syphon framework into the unzipped folder.
+Debug       Contains the "Chromium Embedded Framework.framework" and other
+            components required to run the debug version of CEF-based
+            applications.
 
-ABOUT SYPHON
-------------
+include     Contains all required CEF header files.
 
-Syphon is a brilliant (Mac OS X only) way to share frames between applications with almost no performance penalty. It is used a lot in live visual performance and creative coding circles.
-Learn about Syphon: http://syphon.v002.info
+libcef_dll  Contains the source code for the libcef_dll_wrapper static library
+            that all applications using the CEF C++ API must link against.
 
-CEF - Chromium Embedded framework
----------------------------------
+Release     Contains the "Chromium Embedded Framework.framework" and other
+            components required to run the release version of CEF-based
+            applications.
 
-As the name implies this application uses CEF3. This is a wrapper around Chromium which makes it possible to use the Chrome technology embedded in regular desktop applications for Mac OSX, Windows and Linux. Chromium is the open source project behind Google Chrome.
+tests/      Directory of tests that demonstrate CEF usage.
 
-http://code.google.com/p/chromiumembedded/
-http://www.chromium.org
+  cefclient Contains the cefclient sample application configured to build
+            using the files in this distribution. This application demonstrates
+            a wide range of CEF functionalities.
+
+  cefsimple Contains the cefsimple sample application configured to build
+            using the files in this distribution. This application demonstrates
+            the minimal functionality required to create a browser window.
+
+  ceftests  Contains unit tests that exercise the CEF APIs.
+
+  gtest     Contains the Google C++ Testing Framework used by the ceftests
+            target.
+
+  shared    Contains source code shared by the cefclient and ceftests targets.
+
+
+USAGE
+-----
+
+Building using CMake:
+  CMake can be used to generate project files in many different formats. See
+  usage instructions at the top of the CMakeLists.txt file.
+
+Please visit the CEF Website for additional usage information.
+
+https://bitbucket.org/chromiumembedded/cef/
+
+
+REDISTRIBUTION
+--------------
+
+This binary distribution contains the below components. Components listed under
+the "required" section must be redistributed with all applications using CEF.
+Components listed under the "optional" section may be excluded if the related
+features will not be used.
+
+Applications using CEF on OS X must follow a specific app bundle structure.
+Replace "cefclient" in the below example with your application name.
+
+cefclient.app/
+  Contents/
+    Frameworks/
+      Chromium Embedded Framework.framework/
+        Chromium Embedded Framework <= main application library
+        Resources/
+          cef.pak <= non-localized resources and strings
+          cef_100_percent.pak <====^
+          cef_200_percent.pak <====^
+          cef_extensions.pak <=====^
+          devtools_resources.pak <=^
+          crash_inspector, crash_report_sender <= breakpad support
+          icudtl.dat <= unicode support
+          natives_blob.bin, snapshot_blob.bin <= V8 initial snapshot
+          en.lproj/, ... <= locale-specific resources and strings
+          Info.plist
+      cefclient Helper.app/
+        Contents/
+          Info.plist
+          MacOS/
+            cefclient Helper <= helper executable
+          Pkginfo
+      Info.plist
+    MacOS/
+      cefclient <= cefclient application executable
+    Pkginfo
+    Resources/
+      binding.html, ... <= cefclient application resources
+
+The "Chromium Embedded Framework.framework" is an unversioned framework that
+contains CEF binaries and resources. Executables (cefclient, cefclient Helper,
+etc) are linked to the "Chromium Embedded Framework" library using
+install_name_tool and a path relative to @executable_path.
+
+The "cefclient Helper" app is used for executing separate processes (renderer,
+plugin, etc) with different characteristics. It needs to have a separate app
+bundle and Info.plist file so that, among other things, it doesn’t show dock
+icons.
+
+Required components:
+
+The following components are required. CEF will not function without them.
+
+* CEF core library.
+  * Chromium Embedded Framework.framework/Chromium Embedded Framework
+
+* Unicode support data.
+  * Chromium Embedded Framework.framework/Resources/icudtl.dat
+
+* V8 snapshot data.
+  * Chromium Embedded Framework.framework/Resources/natives_blob.bin
+  * Chromium Embedded Framework.framework/Resources/snapshot_blob.bin
+
+Optional components:
+
+The following components are optional. If they are missing CEF will continue to
+run but any related functionality may become broken or disabled.
+
+* Localized resources.
+  Locale file loading can be disabled completely using
+  CefSettings.pack_loading_disabled.
+
+  * Chromium Embedded Framework.framework/Resources/*.lproj/
+    Directory containing localized resources used by CEF, Chromium and Blink. A
+    .pak file is loaded from this directory based on the CefSettings.locale
+    value. Only configured locales need to be distributed. If no locale is
+    configured the default locale of "en" will be used. Without these files
+    arbitrary Web components may display incorrectly.
+
+* Other resources.
+  Pack file loading can be disabled completely using
+  CefSettings.pack_loading_disabled.
+
+  * Chromium Embedded Framework.framework/Resources/cef.pak
+  * Chromium Embedded Framework.framework/Resources/cef_100_percent.pak
+  * Chromium Embedded Framework.framework/Resources/cef_200_percent.pak
+    These files contain non-localized resources used by CEF, Chromium and Blink.
+    Without these files arbitrary Web components may display incorrectly.
+
+  * Chromium Embedded Framework.framework/Resources/cef_extensions.pak
+    This file contains non-localized resources required for extension loading.
+    Pass the `--disable-extensions` command-line flag to disable use of this
+    file. Without this file components that depend on the extension system,
+    such as the PDF viewer, will not function.
+
+  * Chromium Embedded Framework.framework/Resources/devtools_resources.pak
+    This file contains non-localized resources required for Chrome Developer
+    Tools. Without this file Chrome Developer Tools will not function.
+
+* Breakpad support.
+  * Chromium Embedded Framework.framework/Resources/crash_inspector
+  * Chromium Embedded Framework.framework/Resources/crash_report_sender
+  * Chromium Embedded Framework.framework/Resources/Info.plist
+    Without these files breakpad support (crash reporting) will not function.
+
+* Widevine CDM support.
+  * widevinecdmadapter.plugin
+    Without this file playback of Widevine projected content will not function.
+    See the CefRegisterWidevineCdm() function in cef_web_plugin.h for usage.
+
+
+LICENSING
+---------
+
+The CEF project is BSD licensed. Please read the LICENSE.txt file included with
+this binary distribution for licensing terms and conditions. Other software
+included in this distribution is provided under other licenses. Please visit
+"about:credits" in a CEF-based application for complete Chromium and third-party
+licensing information.
