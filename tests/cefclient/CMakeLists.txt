@@ -460,6 +460,10 @@ if(OS_MACOSX)
     COMMAND ${CMAKE_COMMAND} -E copy_directory
             "${CEF_BINARY_DIR}/Chromium Embedded Framework.framework"
             "${CEF_APP}/Contents/Frameworks/Chromium Embedded Framework.framework"
+    # syph - Copy the Syphon framework into the Frameworks directory
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/../../Syphon.framework"
+            "${CEF_APP}/Contents/Frameworks/Syphon.framework"
     VERBATIM
     )
 
