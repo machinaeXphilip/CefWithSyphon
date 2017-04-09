@@ -1,5 +1,5 @@
-CefWithSypon
-============
+CefWithSyphon
+=============
 
 This is an application for Mac OS X that allows you to share the contents of a web browser
 (based on Chrome) using Syphon. It implements most of the things you'd expect except pop
